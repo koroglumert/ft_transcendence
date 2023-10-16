@@ -1,5 +1,10 @@
 # ft_transcendence
 
+git init
+git remote add origin https://github.com/koroglumert/ft_transcendence.git
+git branch -M main -> branch isim değişikliği
+git push -u origin main
+
 
 #İşlemlerinizi (git add ...) kendi brachlerinizde yapmanız gerekiyor.
 
