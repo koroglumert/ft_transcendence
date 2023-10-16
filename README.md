@@ -21,3 +21,5 @@ NOT: Ortak dosyalarda değişiklikler çakışmalara sebebiyet verir.
 Git çakışmalar için örnek düzenlemeleri verir.
 
 NOT: Çalıştığınız brachte yaptığınız değişiklikleri commitlemeden başka bir branche geçecekseniz -> git stash -> geri döndüğünüzde -> git stash pop
+
+git branch -M YYY -> branch isim değişikliği
