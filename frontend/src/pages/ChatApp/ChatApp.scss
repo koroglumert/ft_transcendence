@@ -1,0 +1,143 @@
+$padding: 12px;
+$radius: 16px;
+$color: #ffffff;
+$color-light: #222;
+$primary-color: #3498db;
+$primary-color-light: lighten($primary-color, 40%);
+$bg-color-light: gray;
+
+$app-width: 900px;
+$app-height: 650px;
+$left-menu-width: 200px;
+
+$message-min-width: 75px;
+$message-max-width: ($app-width - $left-menu-width) / 1.5;
+$message-line-height: 20px;
+
+.app {
+  background-color: $bg-color-light;
+  width: 90vw; /* Ekran genişliği */
+  height: $app-height;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  border-radius: $radius;
+  overflow: hidden;
+  
+  display: flex;
+  flex-direction: row;
+  
+  .contact-list {
+    background-color: $color-light;
+    width: 30vw; /* Ekran genişliği */
+    overflow: auto;
+    
+    .title {
+      padding: $padding; margin: 0;
+      padding-bottom: 0;
+      font-size: 135%;
+    }
+    
+    ul {
+      list-style: none;
+      margin: 0; padding: $padding;
+      
+      li {
+        margin: $padding / 1.5 0;
+        padding: $padding / 1.5 $padding;
+        position: relative;
+        cursor: pointer;
+        transition: all .2s ease-out;
+        
+        &.active, &:hover {
+          background-color: #0f0;
+          color: $primary-color;
+          border-radius: $radius;
+        }
+      }
+    }
+  }
+  
+  .messages {
+    margin: $padding;
+    background-color: $color-light;
+    border-radius: $radius;
+    overflow: hidden;
+    
+    flex: 1 1 auto;
+    
+    display: flex;
+    flex-direction: column;
+    
+    .messages-history {
+      overflow: auto;
+      
+      flex: 1 1 auto;
+      
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: end;
+      
+      .message {
+        width: 100%;
+        padding: $padding;
+        padding-top: 0;
+        
+        &:last-child {
+          padding-top: $padding;
+        }
+        
+        &.me {
+          text-align: right;
+          
+          .message-body {
+            color: $color-light;
+            background-color: $primary-color;
+          }
+        }
+        
+        .message-body {
+          background-color: $bg-color-light;
+          color: $color;
+          font-weight: 400;
+          display: inline-block;
+          padding: $padding / 1.5 $padding;
+          border-radius: $radius;
+          max-width: $message-max-width;
+          min-width: $message-min-width;
+          line-height: $message-line-height;
+          text-align: initial;
+        }
+      }
+    }
+    
+    .messages-inputs {
+      display: flex;
+      
+      input[type="text"] {
+        background-color: transparent;
+        border: none;
+        padding: $padding;
+        resize: vertical;
+        
+        flex: 1 1 auto;
+      }
+      
+      button {
+        padding: 0 $padding;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        
+        &:hover {
+          i {
+            color: $primary-color;
+          }
+        }
+        
+        i {
+          vertical-align: middle;
+          transition: all .2s ease-out;
+        }
+      }
+    }
+  }
+}
