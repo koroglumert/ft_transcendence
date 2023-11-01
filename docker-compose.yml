@@ -1,29 +1,23 @@
 version: "3.3"
 services:
-  mongo_db_server:
-    container_name: fin-pong-db
-    image: mongo
-    networks:
-        - ninternal
   backend:
-    container_name: fin-pong-backend
-    build: ./backend
+    container_name: finpong-backend
+    image: mertkoroglu/finpong:backend
+    restart: unless-stopped
     ports: 
         - 3002:3002
-    depends_on:
-        - mongo_db_server
+        - 4000:4000
     networks:
-        - ninternal
-
+        - internal
   frontend:
-    container_name: fin-pong-frontend
-    build: ./frontend
+    container_name: finpong-frontend
+    image: mertkoroglu/finpong:frontend
+    restart: unless-stopped
     ports:
         - 3000:3000
     depends_on:
         - backend
     networks:
-        - ninternal
-
+        - internal
 networks:
-    ninternal:
+    internal:
