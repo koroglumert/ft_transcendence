@@ -1,0 +1,143 @@
+/* App Container */
+.app {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Contact List Container */
+.contact-list {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+  background-color: red;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.contact-list button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.contact-list button:hover {
+  background-color: #0056b3;
+}
+
+/* Messages Container */
+.messsages {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: green;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* Chat Header */
+.chat-header {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 20px 0;
+  text-align: center;
+  background-color: #333;
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Chat Box */
+.chat-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.messages-box {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 4%;
+}
+
+/* Messages */
+.messages {
+  flex: 1;
+  color: black;
+  overflow-y: auto;
+  background-color: blue;
+  padding: 20px;
+}
+
+.message {
+  background: yellow;
+  padding: 15px;
+  border-radius: 10px;
+  word-wrap: break-word;
+  margin-top: 10px;
+  max-width: 70%;
+}
+
+.message.self {
+  background: #00bd9b;
+  color: white;
+}
+
+.message span {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Chat Input */
+input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.send-btn {
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+  
+  .contact-list {
+    border-radius: 0;
+  }
+  
+  .contact-list button {
+    border-radius: 0;
+  }
+  
+  .messsages {
+    border-radius: 0;
+  }
+  
+  .chat-header {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  
+  .messages {
+    border-radius: 0;
+  }
+}

@@ -2,22 +2,34 @@ version: "3.3"
 services:
   backend:
     container_name: finpong-backend
-    image: mertkoroglu/finpong:backend
-    restart: unless-stopped
+    build: ./backend
     ports: 
         - 3002:3002
         - 4000:4000
     networks:
-        - internal
+        - finpong-internal
   frontend:
     container_name: finpong-frontend
-    image: mertkoroglu/finpong:frontend
-    restart: unless-stopped
+    build: ./frontend
     ports:
         - 3000:3000
     depends_on:
         - backend
     networks:
-        - internal
+        - finpong-internal
+  nginx:
+    container_name: finpong-nginx
+    from: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /path/to/ssl/certificates:/etc/nginx/certs
+      - /etc/nginx/sites-available:/etc/nginx/conf.d
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - finpong-internal
 networks:
-    internal:
+    finpong-internal:

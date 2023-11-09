@@ -1,0 +1,14 @@
+PORT=3002
+MONGO_URI = "mongodb+srv://chat:123@cluster0.ndh82mw.mongodb.net/?retryWrites=true&w=majority"
+
+#Canli için
+# BACK_URL = "https://finpong.games:3002"
+# FRONT_URL = "https://finpong.games"
+# CLIENT_ID = 'u-s4t2ud-f4e5594cc6943ca666f82fb10c60fe6a679794a5b316b3c1286994c278d73bc0'
+# CLIENT_SECRET = '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'
+
+#local için
+BACK_URL = "https://localhost:3002"
+FRONT_URL = "https://localhost:3000"
+CLIENT_ID = 'u-s4t2ud-f57317033b8be51b1032fa71aaaf44e39b8d3dbdb62b9e73e96d8fbb683c5819'
+CLIENT_SECRET = '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'
