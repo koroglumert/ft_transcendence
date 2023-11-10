@@ -39,7 +39,7 @@
     position: relative;
     padding: 6px;
     cursor: pointer;
-    background: linear-gradient(270deg, #3fa1a9, #79f1a4);
+    background: linear-gradient(270deg, rgb(56, 195, 56), #0f0);
     margin-bottom: 25px;
   }
   

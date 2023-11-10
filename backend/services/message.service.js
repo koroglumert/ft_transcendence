@@ -16,18 +16,18 @@ module.exports = {
 		create: {
 			method: "POST",
 			async handler(ctx) {
-				const { chatId, firstId, secondId, text } = ctx.params;
+				const { chatId, senderId, text } = ctx.params;
 				ctx.params.createdAt = new Date();
 				ctx.params.updatedAt = new Date();
 				const created = ctx.params.createdAt;
 				const updated = ctx.params.updatedAt;
 				const response = {
-					chatId, firstId, text, created, updated
+					chatId, senderId, text, created, updated
 				};
 				try {
 					const newMessage = await this.adapter.insert(response);
 					const users = await ctx.call("io.getLinkedPeople");
-					await ctx.call("io.sendAllMessages", { chatId: chatId, firstId: firstId, secondId: secondId, text: text });
+					await ctx.call("io.sendAllMessages", { chatId: chatId, senderId: senderId, text: text });
 					return newMessage;
 				} catch (error) {
 					return error;

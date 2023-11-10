@@ -1,17 +1,18 @@
 /* App Container */
 .app {
   display: flex;
+  padding: 4%;
   justify-content: space-between;
-  height: 100%;
-  overflow: hidden;
+  height: 91.8vh;
+  width: 100%;
+  /*overflow: hidden;*/
 }
 
 /* Contact List Container */
 .contact-list {
   flex: 1;
   padding: 40px;
-  overflow-y: auto;
-  background-color: red;
+  background-color: #3a4750;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -22,6 +23,9 @@
   border-radius: 10px;
   padding: 10px 20px;
   cursor: pointer;
+  &:hover {
+    background-color: #0056b3;
+  }
 }
 
 .contact-list button:hover {
@@ -31,12 +35,12 @@
 /* Messages Container */
 .messsages {
   flex: 2;
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background-color: green;
+  background-color: #303841;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
 }
 
 /* Chat Header */
@@ -66,6 +70,15 @@
   padding: 4%;
 }
 
+.messages-history {
+  display: flex;
+  min-height: 400px;
+  max-height: 400px; /* Varsayılan olarak görüntülenen yükseklik */
+  overflow-y: scroll; /* Dikey kaydırma çubukları gösterilsin */
+  flex-direction: column;
+  background: #3a4750;
+}
+
 /* Messages */
 .messages {
   flex: 1;
@@ -76,12 +89,13 @@
 }
 
 .message {
-  background: yellow;
+  background: #d3d6db;
   padding: 15px;
-  border-radius: 10px;
   word-wrap: break-word;
   margin-top: 10px;
   max-width: 70%;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .message.self {
@@ -96,8 +110,7 @@
 
 /* Chat Input */
 input[type="text"] {
-  padding: 10px;
-  border: 1px solid #ccc;
+  padding: 2%;
   border-radius: 10px;
   width: 100%;
   max-width: 100%;
@@ -139,5 +152,12 @@ input[type="text"] {
   
   .messages {
     border-radius: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .app {
+    flex-direction: column;
+    width: 70%;
   }
 }

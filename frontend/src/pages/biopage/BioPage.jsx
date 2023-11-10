@@ -7,6 +7,7 @@ import User3 from "../../assets/pixel-art-3.png";
 import User4 from "../../assets/pixel-art-4.png";
 import User5 from "../../assets/pixel-art-5.png";
 import SocialBar from "../../components/SocialBar";
+import Deneme from "../../assets/deneme.png";
 
 const Container = styled.div`
     width: 100%;
@@ -53,6 +54,11 @@ const ProfileParagraph = styled.p`
     padding: 3% 5% 7%;
     width: 100%;
     height: 100%;
+`;
+
+const Banner = styled.img`
+    object-fit: cover;
+    width: 100%;
 `;
 
 const BioPage = () => {

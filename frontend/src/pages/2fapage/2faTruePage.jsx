@@ -1,31 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
 import { BACK_URL } from "../../env";
-const PasswordInput = ({ handleLogin }) => {
-	const cookies = new Cookies();
-	const userdata = cookies.get('data');
-	const [code, setCode] = useState('');
+
+const PasswordInput = ({ flag, setFlag }) => { // Pass setFlag as a prop
+
+  const cookies = new Cookies();
+  const userdata = cookies.get('data');
+  const [code, setCode] = useState('');
 
   const handleCodeChange = (e) => {
     setCode(e.target.value);
   };
 
-  const handlePost = () => {
-    fetch(`${BACK_URL}/api/2fa/verify`, {
-      method: 'POST',
-      body: JSON.stringify({ token: code , userId: userdata.userId}),
-      headers: {
-        'Content-Type': 'application/json'
+  const handlePost = async () => {
+    try {
+      const response = await fetch(`${BACK_URL}/api/2fa/verify`, {
+        method: 'POST',
+        body: JSON.stringify({ token: code, userId: userdata.userId }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      const data = await response.json();
+  
+      console.log(data);
+  
+      if (data.verified === true) {
+        window.location.href = "http://localhost:3000/MainPage";
+        localStorage.setItem('flag', 'true');
+      } else {
+        // İstediğiniz hata işlemini burada yapabilirsiniz.
       }
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data); 
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Giriş yapılamadı', error);
-    });
-  };
+    }
+  };  
 
   return (
     <div>
@@ -39,9 +49,6 @@ const PasswordInput = ({ handleLogin }) => {
         />
       </div>
       <div>
-        <button onClick={() => handleLogin(code)}>
-          Giriş Yap
-        </button>
         <button onClick={handlePost}>
           Post Yap
         </button>

@@ -17,11 +17,26 @@ const FooterText = styled.h1`
     color: white;
 `;
 
+const FooterLink = styled.a`
+    font-size: 13px;
+    font-weight: 900;
+    color: #00FF00;
+    text-decoration: none;
+    &:hover {
+        color: black;
+        text-decoration: underline;
+    }
+`;
+
+const handleBioClick = () => {
+    window.location.href = "http://localhost:3000/bio";
+}
+
 const Footer = () => {
     return (
         <FooterDiv>
-            <img src={Crew} alt="Crew" style={{ width: "10%", height: "10%", objectFit: "cover" }} />
-            <FooterText>©2023 Fin-Pong | Created by FintecFellow Students</FooterText>
+            <img onClick={ handleBioClick } src={Crew} alt="Crew" style={{ width: "10%", height: "10%", objectFit: "cover", cursor:"pointer" }} />
+            <FooterText>©2023 Fin-Pong | Created by <FooterLink href="http://localhost:3000/bio">FintechFellow Students</FooterLink></FooterText>
         </FooterDiv>
     );
 }

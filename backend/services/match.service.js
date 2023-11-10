@@ -51,6 +51,7 @@ module.exports = {
 				const result = await this.adapter.insert(match);
 				await ctx.call('lobby.delete', {userIdOne: userIdOne, userIdTwo: userIdTwo});
 				await ctx.call('match.sendData', {match: result});
+				await ctx.call('io.moveBall', {matchId: result._id, event: 0});
 				return result;
 			},
 		},

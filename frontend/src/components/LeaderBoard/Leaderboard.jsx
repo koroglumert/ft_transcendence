@@ -12,7 +12,7 @@ function Leaderboard(props) {
   const rows = sortedUsers.slice(0, 10).map((user, i) => {
     const { profilePicture, name, rank } = user;
     const openProfile = () => {
-      window.location.href = `${FRONT_URL}/profile/${name}`;
+      navigate(`/profile/${name}`);
     };
 
     return (
@@ -25,6 +25,7 @@ function Leaderboard(props) {
           }}
         />
         <mark>{name}</mark>
+
         <small>{rank}</small>
       </li>
     );
@@ -33,7 +34,7 @@ function Leaderboard(props) {
   return (
     <div className='leaderboard'>
       <h1 style={{ color: "white" }}>{props.title || 'Leaderboard'}</h1>
-      <ol>{rows}</ol>
+      <ol style={{cursor:"pointer"}}>{rows}</ol>
     </div>
   );
 }

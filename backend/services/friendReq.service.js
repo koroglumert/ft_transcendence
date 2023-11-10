@@ -85,6 +85,7 @@ module.exports = {
 				}
 			},
 		},
+
 		actions: {
 			friendReq: {
 				rest: "POST /friendReq",
@@ -166,7 +167,6 @@ module.exports = {
 					}
 				}
 			},
-
 			listSearch: {
 				rest: "POST /listSearch",
 				async handler(ctx) {
@@ -175,16 +175,17 @@ module.exports = {
 						let allUser = await ctx.call("users.allUsers");
 						let blockedUsers = await ctx.call("block.listBlockedYou", { userIdOne: userId });
 						let friendUsers = await ctx.call("friend.listFriend", { userIdOne: userId });
-
-						console.log("block", blockedUsers);
-						console.log("friend", friendUsers);
+						let iBlocked = await ctx.call("block.listBlock", { userIdOne: userId });
+						let indexToRemove = allUser.findIndex(user => user.userId == userId);
+						allUser.splice(indexToRemove, 1);
 	
 						const filteredUsers = [];
-				
+
 						allUser.forEach(async (user) => {
 							const isBlocked = await blockedUsers.data.some((blockedUser) => blockedUser.userIdOne === user.userId);
 							const isFriend = await friendUsers.data.some((friendUser) => ((friendUser.userId === user.userId)));
-							if (!isBlocked && !isFriend) {
+							const isIBlocked = await iBlocked.data.some((iBlocked) => ((iBlocked.userId === user.userId)));
+							if (!isBlocked && !isFriend && !isIBlocked) {
 								filteredUsers.push(user);
 							}
 						});

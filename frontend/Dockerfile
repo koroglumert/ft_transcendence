@@ -6,5 +6,3 @@ COPY . .
 RUN npm install
 
 CMD  npm i && npm start
-
-

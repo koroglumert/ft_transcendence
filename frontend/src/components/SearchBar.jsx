@@ -7,35 +7,33 @@ import FriendsButton from "./FriendsButton";
 const Form = styled.form`
     align-items: center;
     width: 100%;
-    border: 2px solid #0f0;
-    padding: 0.5rem 1rem;
+    postion: absolute;
+    padding: 2%;
     display: flex;
     background-color: white;
-    
-    &:focus-within {
-        outline: auto;
+    outline: none;
+    @media (max-width: 768px) {
+        width: 14vh;
     }
 `;
 
 const Input = styled.input`
     background-color: transparent;
     font-size: 1.2rem;
-    padding: 2px;
     margin-left: 4%;
-    width: 100%;
     color: black;
-    &:focus {
-        outline: none;
-    }
+    outline: none;
+    border: none;
 `;
 
 const SearchDropDown = styled.div`
-    top: 99%;
+    top: 100%;
     position: absolute;
     left: 0;
     flex-direction: column;
     background-color: black;
-    border: 1px solid gray;
+    perspective: 900px;
+    box-shadow: 0 7px 20px #242424;
     border-radius: 10px;
     width: 100%;
     z-index: 1;
@@ -43,65 +41,62 @@ const SearchDropDown = styled.div`
 
 const ProfileImage = styled.img`
     cursor: pointer;
-    width: 150px;
-    height: 150px;
+    width: 60px;
+    height: 60px;
     owerflow: hidden;
-    border-radius: 15%;
-    color: black;
+    border-radius: 50%;
     object-fit: cover;
 `;
 
 const ListDiv = styled.div`
     display: flex;
     width: 100%;
+    height: 100%;
     align-items: center;
     background-color: black;
 `;
 
 const ListItem = styled.div`
+    width: 100%;
     display: flex;
     align-items: center;
-    font-size: 35px;
-    line-height: 1.5rem;
+    padding: 0px 50px 0px 0px;
+    justify-content: space-between;
+    border: 0.1px solid white;
     background-color: black;
-
-    &:hover {
-        background-color: rgb(22, 161, 22);
-        transition: background-color 200ms ease-in;
-    }
 `;
 
 const ListItemLink = styled.a`
     width: 100%;
-    height: 100%;
+    color: white;
     display: flex;
-    font-size: 22px;
+    padding: 6%;
+    font-size: 1.2rem;
     flex-direction: column;
     justify-content: center;
+    text-align: left;
     align-items: center;
-    text-decoration: none;
-    color: white;
-    text-decoration: none;
 `;
 
 const SearchBar = ({ useridOne, alluser }) => {
     const [searchVal, setSearchVal] = useState('');
     const [filteredUsers, setFilteredUsers] = useState([]);
-
     const handleInputChange = (e) => {
         setSearchVal(e.target.value);
     };
-
-    useEffect(() => {
-        setFilteredUsers(
-            alluser.filter((user) => { // alldata'daki kullanıcıları filtreleyin
-            return user.name?.includes(searchVal); // Kullanıcının adını arayın
-            })
-        );
-    }, [searchVal, alluser]);
     
-    return (
-        <Form role="search" value={searchVal} onChange={handleInputChange}>
+    useEffect(() => {
+        if (alluser) { // alluser tanımlı ise işlem yap
+          setFilteredUsers(
+            alluser?.filter((user) => {
+              return user.name?.includes(searchVal);
+            })
+            );
+            }
+        }, [searchVal, alluser]);      
+
+        return (
+            <Form role="search" value={searchVal} onChange={handleInputChange}>
             <img
                 style={{ width: "8%", height: "8%", cursor: "pointer" }}
                 alt="filter"
@@ -114,13 +109,18 @@ const SearchBar = ({ useridOne, alluser }) => {
                         {filteredUsers.map((user) =>
                             searchVal ? (
                                 <ListItem key={user.userId}>
+                                    <div style={{width:"30%"}}>
                                     <ProfileImage
-                                        style={{ width: "25%", height: "40%" }}
                                         src={user.profilePicture || { DefaultProfile }}
                                         alt="Profile Image"
                                     />
-                                    <ListItemLink href="#">{user.name}</ListItemLink>
-                                    <FriendsButton useridOne={useridOne} useridTwo={user.userId} />
+                                    </div>
+                                    <div style={{width:"30%"}}>
+                                    <ListItemLink>{user.name}</ListItemLink>
+                                    </div>
+                                    <div style={{width:"40%"}}>
+                                        <FriendsButton useridOne={useridOne} useridTwo={user.userId} />
+                                    </div>
                                 </ListItem>
                             ) : null
                         )}

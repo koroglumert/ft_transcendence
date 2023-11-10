@@ -7,26 +7,54 @@ import styled from "styled-components";
 
 const Container = styled.div`
     display: flex;
+    background:linear-gradient(#0f0, #3a4750);
     flex-direction: column;
-    justify-content: center;    
+    height: 100vh;
 `;
 
-const ButtonDiv = styled.div`
-    display: flex;
-    gap: 3%;
+const Body = styled.div`
     justify-content: center;
+    display: flex;
+`;
+
+const Header = styled.h1`
+    text-align: center;
+    color: white;
+`;
+
+const FriendDiv = styled.div`
+    display: flex;
+    width: 50%;
+    min-height: 60vh;
+    flex-direction: column;
     align-items: center;
-    margin: 10px;
+    background-color: #42b883;
+    color: white;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+`;
+
+const BlockedDiv = styled.div`
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #c3195d;
+    color: white;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
 `;
 
 const Button = styled.button`
-    width: 10%;
-    border-radius: 50px;
+    width: 30%;
+    border-radius: 10px;
     border: none;
     background-color: #4CAF50;
     color: white;
-    font-size: 100%;
-    padding: 13px;
+    font-size: 20px;
+    padding: 10px 2px;
     font-weight: bold;
     cursor: pointer;
     &:hover {
@@ -41,7 +69,6 @@ const SocialPage = () => {
 
     const [allblocks, setAllblocks] = useState([]);
     const [allfriends, setAllfriends] = useState([]);
-    const [divFriend, setDivFriend] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,6 +87,7 @@ const SocialPage = () => {
             try {
                 const res = await axios.post(`${BACK_URL}/api/block/listBlock`, { userIdOne: userdata.userId }, { withCredentials: true });
                 setAllblocks(res.data.data);
+                console.log("res.data.data", res.data.data);
             } catch (err) {
                 console.error("Error fetching data:", err);
             }
@@ -67,42 +95,62 @@ const SocialPage = () => {
         fetchData();
     }, []);
 
-    console.log("allblocks", allblocks);
-    console.log("allfriends", allfriends);
+    const handleUnblock = (useridOne, useridTwo) => { // status için add yada remove gelebilir.
+        const fetchData = async () => {
+            try {
+                await axios.post(`${BACK_URL}/api/block/handleBlock`,
+                    { userIdOne: useridOne, userIdTwo: useridTwo, status: "remove" },
+                    { withCredentials: true });
+                window.location.reload();
+            } catch (err) {
+                console.error("Error fetching data:", err);
+            }
+        };
+        fetchData();
+    };
 
-    const handleDivFriend = () => {
-        setDivFriend(!divFriend);
+    const handleUnfriend = (useridOne, useridTwo) => { // status için add yada remove gelebilir.
+        const fetchData = async () => {
+            try {
+                await axios.post(`${BACK_URL}/api/friend/handleFriend`,
+                    { userIdOne: useridOne, userIdTwo: useridTwo, status: "remove" },
+                    { withCredentials: true });
+                    window.location.reload();
+            } catch (err) {
+                console.error("Error fetching data:", err);
+            }
+        };
+        fetchData();
     };
 
     return (
         <Container>
-            <ButtonDiv>
-                <Button onClick={handleDivFriend}>Friends List</Button>
-                <Button onClick={handleDivFriend}>Blocked List</Button>
-            </ButtonDiv>
-            <div>
-                {divFriend ? (
-                    <div>
-                        {allfriends.map((friend) => (
-                        <div key={friend.userId} style={{display:"flex", justifyContent:"center", textAlign:"center", backgroundColor:"red"}}>
-                            <img src={friend.profilePicture} style={{width:"100px", height:"100px", borderRadius:"50%", backgroundColor:"blue"}}></img>                    
-                            <h1>{friend.name}</h1>
-                            <button>Unfriend</button>
-                        </div>
-                        ))}
+            <Body>
+                <FriendDiv>
+                    <Header>Friend List</Header>
+                    <div style={{background:"blue", minHeight:"500px", minWidth:"100%", borderRadius:"10px"}}>
+                    {allfriends.map((friend) => (
+                    <div key={friend.userId} style={{display:"flex", alignItems:"center", gap:"10%", justifyContent:"center"}}>
+                        <img src={friend.profilePicture} style={{width:"100px", height:"100px", borderRadius:"50%", backgroundColor:"blue", objectFit:"cover"}}></img>                    
+                        <h1>{friend.name}</h1>
+                        <Button onClick={() => handleUnfriend(userdata.userId, friend.userId)}>Unfriend</Button>
                     </div>
-                ) : (
-                    <div>
-                        {allblocks.map((block) => (
-                        <div key={block.userId} style={{display:"flex", justifyContent:"center", textAlign:"center", backgroundColor:"blue"}}>
-                            <img src={block.profilePicture} style={{width:"100px", height:"100px", borderRadius:"50%", backgroundColor:"blue"}}></img>
-                            <h1>{block.name}</h1>
-                            <button>Unblock</button>
-                        </div>
-                        ))}
+                    ))}
                     </div>
-                )}
-            </div>
+                </FriendDiv>
+                <BlockedDiv>
+                    <Header>Blocked List</Header>
+                    <div style={{background:"blue", minHeight:"500px", minWidth:"100%",borderRadius:"10px", justifyContent:"center"}}>
+                    {allblocks.map((block) => (
+                    <div key={block.userId} style={{display:"flex", alignItems:"center", gap:"10%", padding:"7px"}}>
+                        <img src={block.profilePicture} style={{width:"100px", height:"100px", borderRadius:"50%", backgroundColor:"blue", objectFit:"cover"}}></img>
+                        <h1>{block.name}</h1>
+                        <Button onClick={() => handleUnblock(userdata.userId, block.userId)}>Unblock</Button>
+                    </div>
+                    ))}
+                    </div>
+                </BlockedDiv>
+            </Body>
         </Container>
         );
 };

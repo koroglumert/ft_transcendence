@@ -17,16 +17,17 @@ module.exports = {
             method: "POST",
             async handler(ctx) {
                 const { groupId, senderId, text } = ctx.params;
+                const { name } = await ctx.call("users.find", { userId: senderId });
                 ctx.params.createdAt = new Date();
                 ctx.params.updatedAt = new Date();
                 const created = ctx.params.createdAt;
                 const updated = ctx.params.updatedAt;
                 const response = {
-                    groupId, senderId, text, created, updated
+                    groupId, senderId, name, text, created, updated
                 };
                 try {
                     const newMessage = await this.adapter.insert(response);
-                    await ctx.call('io.sendGroupMessages', {groupId: groupId, text: text});
+                    await ctx.call('io.sendGroupMessages', { groupId: groupId, text: text });
                     return newMessage;
                 } catch (error) {
                     return error;

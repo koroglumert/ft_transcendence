@@ -1,16 +1,15 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    background-color: #0f0;
+    background: linear-gradient(#0f0, #3a4750);
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    height: 100vh;
 `;
 
 export const Navbar = styled.div`
+    background: linear-gradient(#222, #444);
     padding: 4px;
     gap: 5px;
-    background-color: black;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -18,47 +17,75 @@ export const Navbar = styled.div`
 `;
 
 export const Body = styled.div`
+    width: 100%;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    justify-items: center;
-    align-items: center;
+    gap: 3%;
+    padding: 1%;
+    @media (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 50px;
+        gap: 1vh;
+    }
 `;
 
 export const Logo = styled.img`
     cursor: pointer;
-    width: 150px;
-    height: 50px;
+    width: 250px;
+    height: 24px;
+    @media (max-width: 768px) {
+        width: 150px;
+        height: 24px;
+    }
+    @media (max-width: 576px) {
+        width: 100px;
+        height: 24px;
+    }
+    @media (max-width: 375px) {
+        width: 50px;
+        height: 24px;
+    }
 `;
 
 export const ProfilePhoto = styled.img`
-    margin-right: 20px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
     background-color: red;
     cursor: pointer;
     object-fit: cover;
+    @media (max-width: 768px) {
+        width: 30px;
+        height: 30px;
+    }
+    @media (max-width: 576px) {
+        width: 20px;
+        height: 20px;
+    }
+    @media (max-width: 375px) {
+        width: 20px;
+        height: 20px;
+    }
 `;
 
 export const LeftBar = styled.div`
-    width: 70%;
+    width: 100%;
 `;
 
 export const RightBar = styled.div`
-    margin-bottom: 24%;
-    margin-right: 6%;
-    justify-content: center;
-    align-items: center;
-    justify-items: center;
-    
+    width: 60%;
 `;
 
 export const NewsDiv = styled.div`
-    background-color: #444;
     color: white;
     padding: 4%;
-    border-radius: 4px;
-    margin: 2%;
+    background: linear-gradient(#3a4750, #303841);
+    border-radius: 12px;
+    perspective: 900px;
+    box-shadow: 0 7px 20px #242424;
 `;
 
 export const Banner = styled.img`
@@ -71,12 +98,41 @@ export const Notification = styled.img`
     cursor: pointer;
 `;
 
+export const Header1 = styled.h1`
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
+    @media (max-width: 576px) {
+        font-size: 15px;
+    }
+`;
+
+export const Header2 = styled.h1`
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
+    @media (max-width: 576px) {
+        font-size: 15px;
+    }
+    @media (max-width: 375px) {
+        font-size: 10px;
+    }
+`;
+
 export const ProfileDropDown = styled.div`
     top: 99%;
     position: absolute;
     left: 0;
     flex-direction: column;
-    background-color: black;
+    background: linear-gradient(#222, #444);
     border: 1px solid gray;
     border-radius: 10px;
     width: 100%;
@@ -89,7 +145,6 @@ export const ProfileDropDownItem = styled.div`
     padding: 10px;
     color: #fff;
     cursor: pointer;
-    
     &:hover {
         background-color: #0f0;
         border-radius: 10px;
@@ -100,7 +155,7 @@ export const ProfileDropDownItem = styled.div`
 export const NotificationDropDown = styled.div`
     position: absolute;
     flex-direction: column;
-    background-color: black;
+    background: linear-gradient(#222, #444);
     border: 1px solid gray;
     border-radius: 10px;
     width: 100%;

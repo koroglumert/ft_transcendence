@@ -19,13 +19,13 @@ services:
         - finpong-internal
   nginx:
     container_name: finpong-nginx
-    from: nginx:latest
+    image: nginx:latest
     ports:
       - 80:80
       - 443:443
     volumes:
-      - /path/to/ssl/certificates:/etc/nginx/certs
       - /etc/nginx/sites-available:/etc/nginx/conf.d
+      - /etc/nginx/ssl:/etc/nginx/ssl
     depends_on:
       - frontend
       - backend

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { BACK_URL, FRONT_URL } from "../../env";
 import Cookies from "universal-cookie";
 import PreLoader from "../../components/PreLoader";
+import Leaderboard from "../../components/LeaderBoard/Leaderboard";
 
 const Container = styled.div`
     display: flex;
@@ -14,7 +15,8 @@ const Container = styled.div`
     align-items: left;
     text-align: left;
     width: 100%;
-    background-color: #0f0;
+    height: 100vh;
+    background: linear-gradient(#0f0, #303841);
 `;
 
 const ProfileDiv = styled.div`
@@ -31,11 +33,12 @@ const InfoDiv = styled.div`
     text-align: center;
     justify-content: center;
     align-items: center;
-    gap: 10%;
+    gap: 2%;
     padding: 2%;
 `;
 
 const MatchDiv = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -44,6 +47,7 @@ const MatchDiv = styled.div`
 
 const FriendDiv = styled.div`
     display: flex;
+    width: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -67,20 +71,6 @@ const ProfileInfo = styled.h2`
     margin: 0;
 `;
 
-const Section1 = styled.section`
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2px;
-    flex-wrap: wrap;
-    overflow: hidden;
-  `;
-
-
-
 const ProfilePage = () => {
     const [alluser, setAlluser] = useState([]);
     const currentURL = window.location.href; // Mevcut sayfanın URL'sini alır
@@ -96,7 +86,7 @@ const ProfilePage = () => {
                 setAlluser(res.data);
             } catch (err) {
                 console.error("Data çekme hatası:", err);
-                window.location.href = `${FRONT_URL}`;
+                window.location.href = `http://${FRONT_URL}/`;
                 return null;
             }
         };
@@ -117,7 +107,6 @@ const ProfilePage = () => {
                 <Container>
                     {user && (
                         <div>
-                            <NavbarMenu />
                         <ProfileDiv>
                             <ProfilePicture src={user.profilePicture} alt="Avatar" />
                             <div style={{flexDirection:"column"}}>
@@ -130,9 +119,11 @@ const ProfilePage = () => {
                         <InfoDiv>
                             <MatchDiv>
                                 Match History
+                                <Leaderboard allusers={alluser} title="LeaderBoard - All Time"/>
                             </MatchDiv>
                             <FriendDiv>
                                 Friends
+                                <Leaderboard allusers={alluser} title="LeaderBoard - All Time"/>
                             </FriendDiv>
                         </InfoDiv>
                         </div>

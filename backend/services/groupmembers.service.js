@@ -43,6 +43,19 @@ module.exports = {
                 }
             }
         },
+        exit: {
+            rest: "POST /exit",
+            async handler(ctx) {
+                const params = ctx.params;
+                try {
+                    const res = await this.adapter.removeMany({ groupId: params.groupId, userId: params.userId })
+                    return res;
+                } catch (error) {
+                    console.log(error);
+                    return error;
+                }
+            }
+        },
         get: {
             method: "GET",
             async handler(ctx) {

@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage/ProfilPage';
 import NavbarMenu from './components/Navbar';
 import TwoFactorAuth from './pages/2fapage/2fapage';
 import PasswordInput from './pages/2fapage/2faTruePage.jsx';
+import ImageUpload from './pages/UploadPhoto.jsx';
 
 function App() {
   const isNavbarVisible = window.location.pathname !== '/MainPage' && window.location.pathname !== '/GamePage' && window.location.pathname !== '/chat'
@@ -35,6 +36,7 @@ function App() {
         <Route path="/bio" element={<BioPage />} />
         <Route path="/profile/:name" element={<ProfilePage />} />
         <Route path="*" element={<Page404 />} />
+        <Route path="/img" element={<ImageUpload />} />
       </Routes>
     </Router>
   );

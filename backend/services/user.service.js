@@ -38,7 +38,10 @@ module.exports = {
 			"currentStatus",
 
 			"twoFactorAuthy",
-			"secret"
+			"secret",
+
+			"createdAt",
+			"updatedAt"
 		],
 
 		entityValidator: {
@@ -52,7 +55,10 @@ module.exports = {
 
 			currentStatus: "string",
 			twoFactorAuthy: "boolean",
-			secret: "string"
+			secret: "string",
+
+			createdAt: "date",
+			updatedAt: "date"
 		},
 
 	},
@@ -77,6 +83,8 @@ module.exports = {
 						entity.currentStatus = 1;
 						entity.twoFactorAuthy = false;
 						entity.userId = entity.userId;
+						entity.createdAt = new Date();
+						entity.updatedAt = new Date();
 						entity.secret = null;
 						const newUser = await this.adapter.insert(entity)
 						return (newUser);
@@ -169,7 +177,7 @@ module.exports = {
 					const filter = await this.adapter.findOne( { userId: userId } );
 					if (filter)
 					{
-						const update = { $set: { name: newName } };
+						const update = { $set: { name: newName, updatedAt: new Date() }, };
 						const updatedUser = await this.adapter.collection.updateOne(filter, update);
 						if (updatedUser.result.ok) {
 							console.log("Username updated.");
@@ -194,7 +202,7 @@ module.exports = {
 					const filter = await this.adapter.findOne( { userId: userId } );
 					if (filter) {
 						const update = { 
-							$set: { profilePicture: newPicture } 
+							$set: { profilePicture: newPicture, updatedAt: new Date()} 
 						};
 						const updatedUser = await this.adapter.collection.updateOne(filter, update);
 						if (updatedUser.result.ok == 1) {
@@ -215,19 +223,23 @@ module.exports = {
 			async handler (ctx) {
 				try {
 					const filter = await this.adapter.findOne({ userId: ctx.params.userId });
+					console.log("userFilter", filter);
 					if (filter){
+						let update;
 						if (ctx.params.flag == "true")
 						{
-							const update = {
-								$set: { twoFactorAuthy: true }
+							update = {
+								$set: { twoFactorAuthy: true , updatedAt: new Date() }
 							}
 						}
 						else if (ctx.params.flag == "false"){
-							const update = {
-								$set: { twoFactorAuthy: false }
+							update = {
+								$set: { twoFactorAuthy: false , updatedAt: new Date() }
 							}
 						}
+						console.log("flag", update);
 						const updatedUser = await this.adapter.collection.updateOne(filter, update);
+						console.log("updatedUser", updatedUser);
 						if (updatedUser.result.ok == 1) {
 							return (updatedUser);
 						} else
@@ -247,7 +259,7 @@ module.exports = {
 					const filter = await this.adapter.findOne( { userId: userId } );
 					if (filter){
 						const update = {
-							$set: { secret: secret}
+							$set: { secret: secret, updatedAt: new Date()}
 						};
 						const updatedUser = await this.adapter.collection.updateOne(filter, update);
 						if (updatedUser.result.ok == 1) {

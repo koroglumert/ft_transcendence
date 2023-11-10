@@ -5,52 +5,42 @@ import { BACK_URL } from "../env";
 
 const Container = styled.div`
     display: flex;
+    flex-direction: row;
+    gap: 5px;
     width: 100%;
     align-items: center;
     justify-content: center;
-    gap: 10px;
 `;
 
 const RequestButton = styled.button`
-    width: 100%;
-    height: 100%;
+    width: 100px;
+    height: 40px;
     padding: 9px;
-    border: 0 auto;
     text-align: center;
     font-weight: 900;
-    background-color: green;
+    background: #347474;
     color: black;
-    font-size: 15px;
+    font-size: 100%;
     border-radius: 5px;
     &:hover{
-        background-color: white;
+        background-color:  #42b883;
+        cursor: pointer;
     }
 `;
 
 const BlockButton = styled.button`
-    width: 100%;
-    height: 100%;
+    width: 100px;
+    height: 40px;
     padding: 9px;
     font-weight: 900;
     border: 0 auto;
-    background-color: red;
+    background-color: #ff0000;
     color: black;
     font-size: 15px;
     border-radius: 5px;
     &:hover{
-        background-color: white;
-    }
-`;
-
-const UnblockButton = styled.button`
-    width: 100%;
-    height: 100%;
-    border: 1px solid gray;
-    background-color: gray;
-    color: black;
-    font-size: 14px;
-    &:hover{
-        background-color: white;
+        cursor: pointer;
+        background-color: #fb7777;
     }
 `;
 

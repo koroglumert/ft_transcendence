@@ -26,6 +26,7 @@ module.exports = {
 				"userIdOne",
 				"userIdTwo",
 				"createdAt",
+				"updatedAt",
 				"status"
 			],
 
@@ -34,7 +35,7 @@ module.exports = {
 				userIdTwo: "string",
 				status: "string",
 				createdAt: "date",
-				updateAt: "date"
+				updatedAt: "date"
 			},
 		},
 
@@ -90,7 +91,10 @@ module.exports = {
 				async handler (ctx) {
 					const { userIdOne, userIdTwo, status } = ctx.params;
 					try {
-						const friendData = await this.adapter.findOne({$and: [{ userIdOne: userIdOne, userIdTwo: userIdTwo }] })
+						const friendData = await this.adapter.findOne({
+						$or: [
+							{ userIdOne: userIdOne, userIdTwo: userIdTwo },
+							{ userIdOne: userIdTwo, userIdTwo: userIdOne }]});
 						if (status == "remove")
 							return this.changeFriendStatus(friendData);
 						else if (status == "add"){

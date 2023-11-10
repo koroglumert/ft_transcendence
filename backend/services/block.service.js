@@ -68,7 +68,7 @@ module.exports = {
 				}
 			},
 
-			async changeFriendStatus(blockData) {
+			async changeBlockStatus(blockData) {
 				try {
 					if (blockData.status == "PASSIVE"){
 						return { success: true, message: "Status is already PASSIVE"};

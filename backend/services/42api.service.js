@@ -54,11 +54,11 @@ module.exports = {
 					return "State eslesmedi";
 				}
 				const tokenParams = new URLSearchParams();
-				 tokenParams.append('grant_type', 'authorization_code');
-				 tokenParams.append('client_id', CLIENT_ID);
-				 tokenParams.append('client_secret', CLIENT_SECRET);
-				 tokenParams.append('redirect_uri', REDIRECT_URI);
-				 tokenParams.append('code', code);
+				tokenParams.append('grant_type', 'authorization_code');
+				tokenParams.append('client_id', CLIENT_ID);
+				tokenParams.append('client_secret', CLIENT_SECRET);
+				tokenParams.append('redirect_uri', REDIRECT_URI);
+				tokenParams.append('code', code);
 				
 				try {
 					const tokenResponse = await axios.post(TOKEN_URL, tokenParams);

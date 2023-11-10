@@ -78,7 +78,31 @@ module.exports = {
 			const pos = ctx.params.pos;
 			const racket = ctx.params.racket;
 			this.io.emit(`${matchId}MOVE`, {pos, pos, racket: racket});
-		}
+		},
+
+		async generateRandom(ctx) {
+			let randomNum;
+			const flag = ctx.params.flag;
+			do {
+				randomNum = Math.floor(Math.random() * 5) - 2; // -2, -1, 1, 2 olasılıkları
+			} while (flag == 0 && randomNum === 0); // 0 hariç bir sayı üretmek için döngüyü tekrarla
+			return randomNum;
+		},
+
+		async moveBall(ctx){
+			const matchId = ctx.params.matchId;
+			const event = ctx.params.event;
+			let speedX = ctx.params.speedX;
+			let speedY = ctx.params.speedY;
+
+			if (event == 0){
+				speedX = await ctx.call('io.generateRandom', {flag: 0});
+				speedY = await ctx.call('io.generateRandom', {flag: 1});
+			}
+			console.log("BALL MATCH ID", matchId, speedX, speedY);
+			this.io.emit(`${matchId}`, {speedX: speedX, speedY: speedY});
+			//return ({speedX: speedX});
+		},
 	},
 
 };

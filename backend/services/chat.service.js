@@ -15,10 +15,19 @@ module.exports = {
 			method: "POST",
 			async handler(ctx) {
 				const chat = ctx.params;
+				const count = Object.keys(chat).length;
+				if (!chat.firstId || !chat.secondId || count != 2)
+					return { message: "eksik veya fazla parametre" }
 				const response = await this.adapter.findOne({
-					$and: [{ firstId: chat.firstId }, { secondId: chat.secondId }]
-				}
-				);
+					$and: [
+						{
+							$or: [
+								{ firstId: chat.firstId, secondId: chat.secondId },
+								{ firstId: chat.secondId, secondId: chat.firstId }
+							]
+						}
+					]
+				});
 				if (response) {
 					return response;
 				}
@@ -34,6 +43,9 @@ module.exports = {
 			method: "GET",
 			async handler(ctx) {
 				const { id } = ctx.params;
+				const count = Object.keys(ctx.params).length;
+				if (count != 1)
+					return { message: "eksik veya fazla parametre" }
 				try {
 					const response = await this.adapter.find({
 						query: {

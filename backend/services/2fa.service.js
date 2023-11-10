@@ -17,14 +17,13 @@ module.exports = {
 					const uri = authenticator.keyuri(userId, "FinPongs", secret);
 				    const image = await qrCode.toDataURL(uri);
 					const setSecret = await ctx.call("users.setSecret", { userId: userId, secret: secret });
-					if (setSecret.success) {
-					  return { success: true, data: image };
-					} else {
-					  return { success: false, data: null };
-					}
+					if (setSecret.result.ok)
+						return { success: true, data: image };
+					else
+						return { success:false, data: null};
 				  } catch (error) {
 					console.error(error);
-					return { success: false, data: null };
+					return { success: false, error: error.message };
 				  }
 			},
 		},
@@ -38,10 +37,12 @@ module.exports = {
 					const user = await ctx.call("users.findUser", { userId: userId });
 				
 					const verified = authenticator.check(token, user.secret);
+					if (verified == true)
+						await ctx.call("users.update2FactorAuthy", { userId: userId, flag: "true" });
 					return { success: true, verified: verified };
 				  } catch (error) {
 					console.error(error);
-					return { success: false , verified: false };
+					return { success: false , error: error.message };
 				  }
 			}
 		}

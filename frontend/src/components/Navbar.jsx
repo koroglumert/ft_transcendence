@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import LogoP from '../assets/logo.png';
+import LogoP from '../assets/logo-v.png';
 import NavbarButton from "./NavbarButton";
 import SearchBar from "./SearchBar";
 import NotificationIcon from '../assets/notification-icon.png';
-import { Navbar, Notification, ProfilePhoto, Logo, ProfileDropDown, ProfileDropDownItem, NotificationDropDown, NotificationDropDownItem } from "../pages/MainPage/MainComponents";
+import { Navbar, Notification, ProfilePhoto, Logo, ProfileDropDown, ProfileDropDownItem, NotificationDropDown, NotificationDropDownItem, Header2 } from "../pages/MainPage/MainComponents";
 import NotificationBar from "./Notification";
 import axios from "axios";
 import Cookies from 'universal-cookie';
 import { FRONT_URL, BACK_URL } from "../env";
 import "./seting.css";
-import CardProfile from "./ProfileCard/CardProfile";
+import NewCard from "./ProfileCard/NewCard";
+import { useNavigate } from 'react-router-dom';
 
 const NavbarMenu = () => {
     const [isDropDownProfile, setDropdownOpen] = useState(false);
@@ -17,13 +18,13 @@ const NavbarMenu = () => {
     const [isDropDownSearch, setDropdownSearch] = useState(false);
     const [searchList, setSearchList] = useState([]);
     const [isSettingsPopupOpen, setSettingsPopupOpen] = useState(false); // Yeni eklenen durum değişkeni
-
+    const [myUser, setMyUser] = useState([]);
     const cookies = new Cookies();
     const userdata = cookies.get('data');
+    const navigate = useNavigate();
 
     const handleOutsideClick = (e) => {
         if (e.target.closest('.handle')) {
-            console.log("inside");
           return;
         }
         setSettingsPopupOpen(false);
@@ -46,12 +47,27 @@ const NavbarMenu = () => {
     }
 
     const handleLogOut = () => {
+        cookies.remove('data');
         window.location.href = `${FRONT_URL}`;
     }
 
     const handleProfilePage = () => {
-        window.location.href = `${FRONT_URL}/profile/${userdata.name}`;
+        navigate(`/profile/${myUser.name}`);
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get(`${BACK_URL}/api/users/find/${userdata.userId}`, { withCredentials: true });
+                setMyUser(res.data);
+            } catch (err) {
+                console.error("Error fetching data:" ,err);
+                window.location.href = "http://localhost:3000/LoginPage";
+                return null;
+            }
+        };
+        fetchData();
+    }, []);
 
     // "Settings" butonuna tıklandığında pop-up penceresini açan fonksiyon
     const handleSettings = () => {
@@ -92,9 +108,9 @@ const NavbarMenu = () => {
                     </NotificationDropDownItem>
                 </NotificationDropDown>
             </div>
-            <div onClick={handleProfile} style={{ display: "flex", cursor: "pointer", width: "40%", position: 'relative', textAlign: "center", alignItems: "center" }}>
-                <ProfilePhoto src={userdata.profilePicture} />
-                <h2 style={{ color: "white" }}>{userdata.name}</h2>
+            <div onClick={handleProfile} style={{ display: "flex", cursor: "pointer", width: "40%", position: 'relative', textAlign: "center", alignItems: "center"}}>
+                <ProfilePhoto src={myUser.profilePicture} style={{marginRight:"10px"}}/>
+                <Header2>{myUser.name}</Header2>
                 <ProfileDropDown style={{ display: isDropDownProfile ? 'flex' : 'none' }}>
                     <ProfileDropDownItem onClick={handleProfilePage}>Profile</ProfileDropDownItem>
                     <ProfileDropDownItem onClick={handleSettings}>Settings</ProfileDropDownItem>
@@ -105,7 +121,7 @@ const NavbarMenu = () => {
             {isSettingsPopupOpen && (
             <div className="settings-popup" onClick={handleOutsideClick}>
                 <div className="handle">
-                    <CardProfile  user={userdata} />
+                    <NewCard  user={myUser} />
                 </div>
             </div>
             )}

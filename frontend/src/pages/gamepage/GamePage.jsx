@@ -34,50 +34,49 @@ const PlayerName = styled.a`
 
 const PongCanvas = styled.canvas`
   background-color: yellow;
-  width: 70%;
-  height: 70%;
+  width: 600px;
+  height: 300px;
 `;
 
 
 
 function GamePage() {
   const canvasRef = useRef(null);
-  const socketRef = useRef(null);
 
   var [match, setMatch] = useState(null);
 
   const cookies = new Cookies();
   const data = cookies.get('data');
 
-  const [racket1Y, setRacket1Y] = useState(20);
-  const [racket2Y, setRacket2Y] = useState(20);
-  const [ballX, setBallX] = useState(400); // Topun x konumu
-  const [ballY, setBallY] = useState(200); // Topun y konumu
+  let [racket1Y, setRacket1Y] = useState(20);
+  let [racket2Y, setRacket2Y] = useState(20);
+  let [ballX, setBallX] = useState(120); // Topun x konumu
+  let [ballY, setBallY] = useState(120); // Topun y konumu
   const [ballSpeedX, setBallSpeedX] = useState(5); // Topun x hızı
   const [ballSpeedY, setBallSpeedY] = useState(2); // Topun y hızı
-  const racketSpeed = 6; // Raketlerin hareket hızı
+  const racketSpeed = 2; // Raketlerin hareket hızı
+  const racketLength = 30;
+  const racketWidth = 10;
+  const racket1LeftPadding = 10;
+  const racket2RightPadding = 20;
 
-  var socket;
-  var theMatch;
   var players;
+  var socket;
 
   useEffect(() => {
+    
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-
+    
     const updateCanvas = () => {
       context.clearRect(0, 0, canvas.width, canvas.height);
-
       context.fillStyle = "red";
-      context.fillRect(10, racket1Y, 10, 40);
+      context.fillRect(racket1LeftPadding, racket1Y, racketWidth, racketLength);
 
       context.fillStyle = "blue";
-      context.fillRect(canvas.width - 20, racket2Y, 10, 40);
+      context.fillRect(canvas.width - racket2RightPadding, racket2Y, racketWidth, racketLength);
 
-      context.fillStyle = "black";
-      context.beginPath();
-      context.arc(ballX, ballY, 10, 0, Math.PI * 2);
-      context.fill();
+      //context.fill();
 
       // Topun hareketi
       //setBallX(ballX + ballSpeedX);
@@ -93,8 +92,8 @@ function GamePage() {
       }*/
 
       const radius = 3; // Topun yarıçapı
-      const x = canvas.width / 2; // Canvas'ın yatay ortası
-      const y = canvas.height / 2; // Canvas'ın dikey ortası
+      const x = ballX / 2; // Canvas'ın yatay ortası
+      const y = ballY / 2; // Canvas'ın dikey ortası
 
 // Topu çiz
       context.beginPath();
@@ -102,7 +101,6 @@ function GamePage() {
       context.fillStyle = 'black'; // Topun rengi
       context.fill();
       context.closePath();
-      
 
       requestAnimationFrame(updateCanvas);
     };
@@ -115,15 +113,17 @@ function GamePage() {
     };
   }, [racket1Y, racket2Y, ballX, ballY, ballSpeedX, ballSpeedY]);
   
-  
+  let newX = 0;
+  let newY = 150;
+
   const handleSocket = async () => {
-    const socket = io(`${SOCKET_URL}`);
+    socket = io(`${SOCKET_URL}`);
 
     socket.on('connect', async (sdata) => {
       console.log("Websocket bağlandı", socket.id);
       console.log("Eşleşme bekleniyor...");
       try {
-        const response = await axios.post(`${BACK_URL}/api/lobby/add`, {
+        const response = await axios.post("http://localhost:3002/api/lobby/add", {
           userId: data.userId,
           socketId: socket.id,
         });
@@ -143,24 +143,66 @@ function GamePage() {
         setMatch(sdata.match);
         console.log("Match", sdata.match, data.userId);
 
-        await socket.on(`${match._id}MOVE`, (sdata) => {
-            console.log("MOVE UP");
-            if (sdata.racket === 1)
-              setRacket1Y(sdata.pos);
-            else if (sdata.racket === 2)
-              setRacket2Y(sdata.pos);
+		var spx = 10;
+		var spy = 5;
+        socket.on(`${match._id}`, (sdata) => {
+          newX = 120;
+          const intervalId = setInterval(() => {
+            // Calculate new x and y values here
+            //newY += speedY;
+            // Update the state with the new values
+
+
+            
+			console.log("AAAAAAA", ballX, ballY)
+            if ((ballX == 0 || ballX == 600)){
+				spx *= -1;
+			}
+            else if (ballY == 0 || ballY == 300){
+				spy *= -1;
+			}
+            newX += spx;
+            ballX = newX;
+            setBallX(newX);
+            console.log("X:", ballX, "Y: ", ballY);
+            if (ballX <= 60 || ballX >= 180){
+              spx *= -1;
+            }
+          }, 500);
         });
-    
-        await socket.on(`${match._id}DOWN`, (sdata) => {
-          console.log("MOVE DOWN");
-          if (sdata.racket === 1)
-              setRacket1Y(sdata.pos);
-          else if (sdata.racket === 2)
+        
+
+        /*const intervalId = setInterval(() => {
+          // Calculate new x and y values here
+          newX += speedX;
+          //newY += speedY;
+          // Update the state with the new values
+          ballX = newX;
+          ballY = newY;
+          setBallX(newX);
+          setBallY(newY);
+          //if (newX > (racket1LeftPadding + racketWidth) * 2 && newY >= 0){
+          //}
+          if (ballX <= 4 || ballX >= 592){
+            speedX *= -1;
+          }
+        }, 5);*/
+
+
+
+        await socket.on(`${match._id}MOVE`, (sdata) => {
+          if (sdata.racket === 1){
+            racket1Y = sdata.pos;
+            setRacket1Y(sdata.pos);
+          }
+          else if (sdata.racket === 2){
+            racket2Y = sdata.pos;
             setRacket2Y(sdata.pos);
+          }
         });
       });
+      
     });
-
 
     /*if (players.length > 1){
       try {
@@ -242,20 +284,33 @@ function GamePage() {
     // }
   };
 
+  /*useEffect(() => {
+    
+
+    return () => {
+      clearInterval(intervalId); // Clean up the interval on component unmount
+    };
+  }, []);*/
+
   function postMove(match, racket, pos){
-        try {
-          const response = axios.post(`${BACK_URL}/api/key/move`, {
-          matchId: match._id,
-          racket : racket,
-          pos: pos,
-        });
-        } catch (error) {
-          
-        }
-        if (racket == 1)
-          setRacket1Y(pos);
-        else if (racket == 2)
-          setRacket2Y(pos);
+    try {
+      const response = axios.post("http://localhost:3002/api/key/move", {
+      matchId: match._id,
+      racket : racket,
+      pos: pos,
+    });
+    } catch (error) {
+      
+    }
+    console.log("MOVERACKET", racket);
+    if (racket === 1){
+      racket1Y = pos;
+      setRacket1Y(pos);
+    }
+    else if (racket === 2){
+      racket2Y = pos;
+      setRacket2Y(pos);
+    }
   };
 
   const handleKeyDown = (event) => {
@@ -270,10 +325,10 @@ function GamePage() {
       }
     }else if (event.key === "s"){
       console.log("MOVE", match);
-      if (data.userId === match.userIdOne && racket1Y < canvasRef.current.height - 40){
+      if (data.userId === match.userIdOne && racket1Y < canvasRef.current.height - racketLength){
         postMove(match, 1, racket1Y + racketSpeed);
       }
-      else if (data.userId === match.userIdTwo && racket2Y < canvasRef.current.height - 40){
+      else if (data.userId === match.userIdTwo && racket2Y < canvasRef.current.height - racketLength){
         postMove(match, 2, racket2Y + racketSpeed);
       }
     }  

@@ -1,0 +1,3 @@
+1->Profil fotoğrafı, username değiştirme. (Bitti sayılır)
+3->Fotoğraf güncelleme algoritması (google drive ? byteArray)
+2->2fa doğrulama ekranları.
